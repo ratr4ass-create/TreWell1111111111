@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>TreWell - Main Page</title>
+<style>
+
+
+  :root {
+    --bg: #f4f4f4;
+    --card: #ffffff;
+    --accent: #697E50;      /* الأخضر المتوسط */
+    --accent-dark: #354c2b; /* الأخضر الغامق */
+    --text: #828d83;        /* نص غامق واضح */
+    --muted: #000000;       /* نص ثانوي باهت */
+  }
+
+
+/* الفئات الطويلة المدى يظهر فيها اللون حسب التقدم */
+.cat.long {
+  position: relative;
+  overflow: hidden;
+  
+  transition: background 0.3s ease;
+}
+
+.cat.long .fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  background-color: var(--fill-color, var(--accent));
+  opacity: 0.3;
+  z-index: 0;
+  transition: width 0.4s ease;
+  border-radius: 10px;
+}
+
+/* نخلي النص فوق اللون */
+.cat.long * {
+  position: relative;
+  z-index: 1;
+}
+
+/* الطبقة الملوّنة حسب التقدم */
+.cat.long::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--progress-color, var(--accent));
+  opacity: 0.25; /* اللون الفاتح */
+  z-index: 0;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+/* النص والعناصر فوق اللون */
+.cat.long > * {
+  position: relative;
+  z-index: 1;
+}
+  body.dark {
+    --bg: #484a48;
+    --card: #343534;
+    --accent: #4e612c;      /* أخضر فاتح */
+    --accent-dark: #354c2b; /* أفتح درجة */
+    --text: #ffffff;        /* نص واضح على الخلفية الداكنة */
+    --muted: #fcfcfc;       /* نفس الأخضر الباهت */
+  }
+
+  body {
+    font-family: Inter, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+    transition: all .2s;
+  }
+
+  .container {
+    max-width: 980px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--card);
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  .header { display: flex; justify-content: space-between; align-items: center; }
+  .left { display: flex; align-items: center; gap: 12px; }
+
+  .hamburger {
+    font-size: 26px;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid transparent;
+  }
+
+  .hamburger:hover { background: rgba(0, 0, 0, 0.03); }
+
+  .title { font-size: 1.25rem; font-weight: 700; }
+
+  .actions { display: flex; gap: 8px; }
+
+  
+
+
+  .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .btn.ghost {
+    background: transparent;
+    color: var(--accent-dark);
+    border: 1px solid var(--accent-dark);
+  }
+
+  .card {
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+    color: #fff;
+    padding: 22px;
+    border-radius: 12px;
+    margin-top: 16px;
+    position: relative;
+  }
+
+  .balance { font-size: 2rem; font-weight: 800; }
+
+  .card-buttons {
+    position: absolute;
+    right: 18px;
+    bottom: 14px;
+    display: flex;
+    gap: 8px;
+  }
+
+  .card-buttons button {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+    border: none;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+
+ .grid-section {
+  margin-bottom: 30px; /* مسافة بين المجموعتين */
+}
+
+.grid-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #516b12;
+  margin: 10px 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+  .cat {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 12px;
+    position: relative;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  }
+
+  body.dark .cat { background: #161616; }
+
+  .cat h4 { margin: 0; color: none; }
+
+  .cat p { margin: 6px 0; font-size: 0.95rem; }
+
+
+
+  .meta { font-size: 0.9rem;  }
+
+  .progress-wrap { margin-top: 8px; }
+
+  .progress-bg {
+    background: #e6e6e6;
+    height: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  body.dark .progress-bg { background: #222; }
+
+  .progress-bar {
+    height: 10px;
+    background: var(--accent);
+    width: 0%;
+    transition: width .25s;
+  }
+
+  .menu-dot { position: absolute; top: 8px; right: 8px; cursor: pointer; font-weight: 700; }
+
+  .menu-box {
+    display: none;
+    position: absolute;
+    top: 32px;
+    right: 8px;
+    background: var(--card);
+    color: var(--text);
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+    min-width: 150px;
+    overflow: hidden;
+    z-index: 9999;
+    pointer-events: auto;
+  }
+
+
+  .inputBox {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 8px 0;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    background: #fafafa;
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+    transition: 0.2s ease;
+}
+
+.inputBox:focus {
+    border-color: #4a5;
+    background: #fff;
+}
+  .menu-box button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .menu-box button:hover { background: rgba(0, 0, 0, 0.03); }
+
+  .over { color: var(--danger); font-weight: 700; }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    align-items: center;
+    justify-content: center;z-index: 80;
+  }
+
+  .panel {
+    background: var(--card);
+    color: var(--text);
+    padding: 16px;
+    border-radius: 10px;
+    width: 360px;
+    max-width: 92%;
+  }
+
+  .panel h3 { margin-top: 0; }
+
+  .field { margin: 8px 0; }
+
+  .confirm-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .confirm-panel {
+    background: var(--card);
+    color: var(--text);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+  }
+
+  .confirm-panel .btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .confirm-panel .btn.ghost {
+    background: transparent;
+    color: var(--accent-dark);
+    border: 1px solid var(--accent-dark);
+  }
+
+  input[type="text"],
+  input[type="number"],
+  input[type="date"],
+  select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    background: transparent;
+    color: var(--text);
+  }
+
+  .row { display: flex; gap: 8px; }
+
+  .muted { color: none; }
+
+  .footer-note { text-align: center; margin-top: 12px; color: var(--muted); }
+
+  .sidebar {
+    position: fixed;
+    left: -260px;
+    top: 0;
+    width: 240px;
+    height: 100%;
+    background: var(--accent-dark);
+    color: #fff;
+    padding: 18px;
+    box-sizing: border-box;
+    transition: left .25s;
+    z-index: 60;
+  }
+ 
+
+  .sidebar h3 { margin-top: 0; }
+
+  .sidebar button {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .sidebar .small {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+    .card-buttons { position: static; margin-top: 12px; }
+  }
+  /* ==== Uiverse-style Wallet Card (green edition) ==== */
+.card {
+  position: relative !important;
+  background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%) !important;
+  color: #fff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+  overflow: hidden !important;
+  border: none !important;
+  transition: transform .25s ease, box-shadow .25s ease !important;
+}
+
+/* تأثير اللمعة مثل بطاقة Uiverse */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0.05) 60%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+/* عند التمرير، اللمعة توضح */
+.card:hover::before {
+  opacity: 0.9;
+}
+
+/* عند التمرير تحس بحركة */
+.card:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25) !important;
+}
+
+/* الكتابة داخل البطاقة */
+.card .balance {
+  font-size: 1.8rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  color: #fff !important;
+}
+
+/* العنوان الصغير */
+.card div[style*="Wallet Balance"] {
+  color: rgba(255,255,255,0.9) !important;
+  font-weight: 500 !important;
+}
+
+/* أزرار البطاقة */
+.card .card-buttons button {
+  background: rgba(255,255,255,0.18) !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  transition: background 0.2s ease, transform 0.2s ease !important;
+}
+.card .card-buttons button:hover {
+  background: rgba(255,255,255,0.3) !important;
+  transform: translateY(-2px);
+}
+
+/* صندوق اختيار العملة */
+.card select {
+  background: rgba(255,255,255,0.15) !important;
+  color: #fff !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  border-radius: 10px !important;
+  padding: 6px 10px !important;
+}
+.card select option {
+  color: #000 !important;
+}
+/* ==== Hover Effect for Categories (same as wallet card) ==== */
+.cat {
+  transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+  border-radius: 14px !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08) !important;
+  position: relative !important;
+  overflow: visible !important; 
+  
+}
+
+/* لمعة داخلية خفيفة (نفس فكرة المحفظة) */
+.cat::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -60%;
+  width: 220%;
+  height: 220%;
+  background: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 60%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* عند تمرير الماوس: ارتفاع ولمعة */
+.cat:hover {
+  transform: none !important;
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ==== تحسين مظهر الفئات الطويلة المدى ==== */
+.cat.long {
+  overflow: visible !important;
+  position: relative !important;
+  transform: none !important;
+  filter: none !important;
+  z-index: auto !important;
+}
+
+/* تفاعل عند المرور (نفس المحفظة) */
+.cat.long:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* الخلفية تكون أفتح شوي من اللون اللي اختاره المستخدم */
+.cat.long {
+  filter: brightness(1.15);
+}
+
+.cat.long::before {
+  opacity: 0 !important;
+}
+.cat.long:hover::before {
+  opacity: 0 !important;
+}
+.cat.long .menu-dot {
+  position: absolute !important;
+  top: 8px !important;
+  right: 8px !important;
+  z-index: 20 !important;
+}
+
+.cat.long .menu-box {
+  position: absolute !important;
+  top: 32px !important;
+  right: 8px !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+}
+
+
+
+/* ==== style Add Category Button  ==== */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--accent-dark, #354c2b);
+  background: var(--accent-light, #354c2b);
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow:
+    inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.1),
+    0 6px 15px rgba(0, 0, 0, 0.08);
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+/* لمعة ناعمة عند المرور */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: linear-gradient(145deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    transparent 100%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 1px 1px 3px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 4px rgba(0, 0, 0, 0.08),
+    0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+/* تأثير ضغط خفيف عند النقر */
+.btn:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 2px 2px 5px rgba(0, 0, 0, 0.15),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.6);
+}
+
+/* نص الزر */
+.btn span,
+.btn {
+  color: #dcdcdc !important;
+  font-weight: 600 !important;
+}
+
+
+/* عند الوضع الداكن */
+@media (prefers-color-scheme: dark) {
+  .btn {
+    background: linear-gradient(145deg, #0f3c26, #15593b);
+    color: #e9fff2;
+    box-shadow:
+      inset 1px 1px 3px rgba(255, 255, 255, 0.1),
+      inset -2px -2px 5px rgba(0, 0, 0, 0.6),
+      0 4px 10px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* ==== Progress bar Uiverse style للفئات الطويلة ==== */
+.cat.long .progress-bg {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  overflow: hidden;
+  height: 10px;
+  margin-top: 10px;
+  box-shadow: inset 2px 2px 5px rgba(0,0,0,0.1), inset -2px -2px 5px rgba(255,255,255,0.15);
+}
+
+.cat.long .progress-fill {
+  height: 10px;
+  border-radius: 10px;
+  transition: width 0.4s ease;
+  background: var(--fill-color, #27ae60);
+  box-shadow: inset 0 0 4px rgba(255,255,255,0.4), 0 1px 4px rgba(0,0,0,0.1);
+}
+
+
+</style>
+</head>
+</html>
+<body>
+<!-- ===================== LOGIN SCREEN ===================== -->
+<div id="loginScreen" style="display:flex; justify-content:center; align-items:center; height:100vh; background:#f4f4f4;">
+  <div class="login-container" style="background:white; padding:30px; border-radius:8px; width:300px; box-shadow:0 0 10px rgba(0,0,0,0.1)">
+    <h2>Login</h2>
+    <input type="text" id="loginUsername" placeholder="Username" class="inputBox">
+    <input type="password" id="loginPassword" placeholder="Password" class="inputBox">
+    <span id="loginError" style="color:red; font-size:0.9em;"></span>
+    <button onclick="login()" style="width:100%; padding:12px; background:#354c2b; color:white; border:none; border-radius:4px;">Login</button>
+    <p style="text-align:center; margin-top:12px;">
+      Don't have an account? <a href="#" onclick="showSignUp()">Sign Up</a>
+    </p>
+  </div>
+
+  <!-- SIGNUP BOX -->
+  <div class="login-container" id="signUpBox" style="display:none; background:white; padding:30px; border-radius:8px; width:300px; box-shadow:0 0 10px rgba(0,0,0,0.1)">
+  <h2>Sign Up</h2>
+
+  <input type="text" id="signupUsername" placeholder="Username" class="inputBox">
+<input type="email" id="signupEmail" placeholder="Email" class="inputBox">
+<input type="password" id="signupPassword" placeholder="Password" class="inputBox">
+<input type="password" id="signupConfirm" placeholder="Confirm Password" class="inputBox">
+
+  <span id="signupError" style="color:red; font-size:0.9em;"></span>
+
+  <button onclick="signUp()" style="width:100%; padding:12px; background:#354c2b; color:white; border:none; border-radius:4px;">Sign Up</button>
+
+  <p style="text-align:center; margin-top:12px;">
+    Already have an account? <a href="#" onclick="showLogin()">Login</a>
+  </p>
+</div>
+</div>
+<!-- ===================== END LOGIN SCREEN ===================== -->
+
+<!-- نخفي الصفحة الرئيسية بالكامل حتى يتم تسجيل الدخول -->
+<div id="mainApp" style="display:none;">
+
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <h3>Menu</h3>
+    <button onclick="showView('home')">🏠 Home</button>
+    <!-- <button onclick="showView('favorites')">⭐ Favorites</button>-->
+    <button id="btnShowFavs">⭐ Favorites</button>
+    <button onclick="showDeleted()">🗑️ Deleted</button>
+    <hr style="border:none;height:1px;background:rgba(255,255,255,0.12);margin:12px 0">
+  <button onclick="logout()" style="background:#e74c3c;">🚪 logout</button>
+    <hr style="border:none;height:1px;background:rgba(255,255,255,0.12);margin:12px 0">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px">
+      <div>Dark Mode</div>
+      <label style="display:inline-block">
+        <input id="darkSwitch" type="checkbox" onchange="toggleDarkMode()" style="width:40px;height:22px;cursor:pointer">
+      </label>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="container">
+    <div class="header">
+      <div class="left">
+        <button class="hamburger" id="hambtn" onclick="toggleSidebar()">☰</button>
+        <div class="title">TreWell</div>
+      </div>
+      
+    </div>
+
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-size:0.95rem;opacity:0.95">Wallet Balance</div>
+          <div class="balance"><span id="balance">0.00</span> <span id="cur">--</span></div>
+        </div>
+        
+          <div class="card-buttons">
+ 
+  <button title="Reset" onclick="openResetPopup()">↻</button>
+
+  <button onclick="showAddBalancePopup()">＋</button>
+  <button title="Subtract" onclick="openDeductPopup()">－</button>
+
+  <select id="currencySelect" onchange="changeCurrency()" style="
+     background: var(--card);        /* لون المربع */
+    color: var(--text);             /* لون النص */
+    border: 1px solid var(--accent);/* حدود المربع */
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  ">
+    <option value="﷼">﷼</option>
+    <option value="USD">USD</option>
+  </select>
+</div>
+        </div>
+      </div>
+    </div>
+    
+<div style="max-width:960px; margin:0 auto; padding:0 16px;">
+
+    <div class="section-head">
+      <h3 id="sectionTitle">All Categories</h3>
+<div style="text-align:right; margin-top:8px; margin-bottom:8px;">
+  <button class="btn" onclick="showPopup()">＋ Add Category</button>
+</div>
+    </div>
+
+    <div style="max-width:960px; margin:0 auto; padding:0 16px;">
+  <div class="grid" id="grid"></div>
+</div>
+
+    <!-- هذا نموذج حق المحفظة -->
+  </div>
+  <div class="overlay" id="overlayBalance">
+  <div class="panel">
+    <h3 id="panelBalanceTitle">Add to Main Balance</h3>
+    <div class="field">
+      <input id="inpBalanceAmount" type="text" placeholder="Enter amount">
+    </div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn" onclick="saveBalance()">Save</button>
+      <button class="btn ghost" onclick="closeBalancePopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- Overlay لتنقيص الرصيد الرئيسي -->
+<div class="overlay" id="overlayDeduct">
+  <div class="panel">
+    <h3 id="panelDeductTitle">Deduct from Main Balance</h3>
+    <div class="field">
+      <input id="inpDeductAmount" type="text" placeholder="Enter amount">
+    </div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn" onclick="deductBalance()">OK</button>
+      <button class="btn ghost" onclick="closeDeductPopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- هذا حق الريسيت -->
+<div class="overlay" id="overlayReset">
+  <div class="panel">
+    <h3 id="panelResetTitle">Reset Main Balance</h3>
+    <p>Are you sure you want to reset your main balance?</p>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn" onclick="confirmResetBalance()">Confirm</button>
+      <button class="btn ghost" onclick="closeResetPopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+  <!-- Add/Edit popup هذا حق نموذج الفئه  -->
+  <div class="overlay" id="overlay">
+    <div class="panel">
+      <h3 id="panelTitle"> Add Category</h3>
+      <div class="field"><input id="inpName" type="text" placeholder="Category name"></div>
+      <div class="field"><input id="inpDesc" type="text" placeholder="Description"></div>
+      <div class="row">
+        <div style="flex:1"><input id="inpTarget" type="text" step="0.01" placeholder="Target amount"></div>
+      </div>
+      <input type="text" id="inpDate" placeholder="Select Date" style="margin-top: 10px;">
+      <div style="margin-top:10px;">
+  <label><input type="radio" name="goalType" value="short" checked> Short-term</label>
+  <label style="margin-left:10px;"><input type="radio" name="goalType" value="long"> Long-term</label>
+</div>
+
+<!-- خيارات اللون والأيقونة (تظهر فقط إذا اختار طويلة المدى) -->
+<div id="longOptions" style="display:none; margin-top:10px;">
+  <div>
+    <label>Color:</label>
+    <div id="colorChoices" style="display:flex; gap:6px; margin-top:4px;">
+      <div class="colorChoice" style="width:24px;height:24px;border-radius:50%;background:#e74c3c;cursor:pointer" onclick="selectColor('#e74c3c')"></div>
+      <div class="colorChoice" style="width:24px;height:24px;border-radius:50%;background:#3498db;cursor:pointer" onclick="selectColor('#3498db')"></div>
+      <div class="colorChoice" style="width:24px;height:24px;border-radius:50%;background:#3ab130;cursor:pointer" onclick="selectColor('#27ae60')"></div>
+      <div class="colorChoice" style="width:24px;height:24px;border-radius:50%;background:#ffc002;cursor:pointer" onclick="selectColor('#f1c40f')"></div>
+      <div class="colorChoice" style="width:24px;height:24px;border-radius:50%;background:#9b59b6;cursor:pointer" onclick="selectColor('#9b59b6')"></div>
+      <div class="colorChoice" style="width:24px;height:24px;border-radius:50%;background:#e67e22;cursor:pointer" onclick="selectColor('#e67e22')"></div>
+      <div class="colorChoice" style="width:24px;height:24px;border-radius:50%;background:#4bdcbf;cursor:pointer" onclick="selectColor('#1abc9c')"></div>
+    </div>
+  </div>
+
+  <div style="margin-top:8px;">
+    <label>Icon:</label>
+    <div id="iconChoices" style="display:flex; gap:8px; margin-top:4px;">
+      <span style="cursor:pointer;font-size:1.2rem" onclick="selectIcon('💰')">💰</span>
+      <span style="cursor:pointer;font-size:1.2rem" onclick="selectIcon('🚗')">🚗</span>
+      <span style="cursor:pointer;font-size:1.2rem" onclick="selectIcon('🏠')">🏠</span>
+      <span style="cursor:pointer;font-size:1.2rem" onclick="selectIcon('✈️')">✈️</span>
+      <span style="cursor:pointer;font-size:1.2rem" onclick="selectIcon('🎓')">🎓</span>
+      <span style="cursor:pointer;font-size:1.2rem" onclick="selectIcon('💍')">💍</span>
+      <span style="cursor:pointer;font-size:1.2rem" onclick="selectIcon('🛠️')">🛠️</span>
+    </div>
+  </div>
+</div>
+      <div style="display:flex; gap:8px; margin-top:10px; ">
+        <button class="btn" onclick="saveCategory()">Save</button>
+        <button class="btn ghost" onclick="closePopup()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- هذا حق الايداع في الفئه -->
+<div class="overlay" id="overlayDeposit">
+  <div class="panel">
+    <h3 id="panelDepositTitle">Deposit to Category</h3>
+    <div class="field">
+      <input id="inpDepositAmount" type="text" step="0.01" placeholder="Enter amount">
+    </div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn" onclick="confirmDeposit()">Save</button>
+      <button class="btn ghost" onclick="closeDepositPopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Overlay السحب -->
+<div class="overlay" id="overlayWithdraw">
+  <div class="panel">
+    <h3 id="panelWithdrawTitle">Withdraw from Category</h3>
+    <div class="field">
+      <input id="inpWithdrawAmount" type="text" step="0.01" placeholder="Enter amount">
+    </div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn" onclick="confirmWithdraw()">Withdraw</button>
+      <button class="btn ghost" onclick="closeWithdrawPopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+<!-- حق حذف فئه-->
+<div class="overlay" id="overlayDelete">
+  <div class="panel">
+    <h3 id="panelDeleteTitle">Delete Category</h3>
+    <p id="deleteMessage">Are you sure you want to delete this category?</p>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+      <button class="btn" onclick="confirmDelete()">OK</button>
+      <button class="btn ghost" onclick="closeDeletePopup()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- تتاكد ان المبلغ ماتعدى المفروض -->
+<div class="overlay" id="overlayMessage">
+  <div class="panel">
+    <p id="msgText"></p>
+    <button class="btn" onclick="closeMsg()">OK</button>
+  </div>
+</div>
+
+  <!-- Deleted overlay -->
+  <div class="overlay" id="delOverlay">
+    <div class="panel">
+      <h3>Deleted Categories</h3>
+      <div id="deletedList"></div>
+      <div style="display:flex; gap:8px; margin-top:12px">
+        <button class="btn" onclick="closeDeleted()">Close</button>
+      </div>
+    </div>
+  </div>
+
+
+</div> <!-- END mainApp -->
+
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+// =============== LOGIN SYSTEM ===============
+
+// إظهار شاشة تسجيل جديدة
+function showSignUp() {
+  document.querySelector(".login-container").style.display = "none";
+  document.getElementById("signUpBox").style.display = "block";
+}
+
+// رجوع لتسجيل الدخول
+function showLogin() {
+  document.querySelector(".login-container").style.display = "block";
+  document.getElementById("signUpBox").style.display = "none";
+}
+
+// إنشاء حساب
+function signUp() {
+  const u = signupUsername.value.trim();
+  const e = signupEmail.value.trim();
+  const p = signupPassword.value.trim();
+  const c = signupConfirm.value.trim();
+
+  // تحقق من إكمال البيانات
+  if (!u || !e || !p || !c)
+    return signupError.innerText = "Fill all fields";
+
+  // تحقق من الإيميل
+  if (!e.includes("@"))
+    return signupError.innerText = "Email must contain @";
+
+  // تحقق من الشروط
+  const passRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).+$/;
+  if (!passRegex.test(p))
+    return signupError.innerText = "Password must include letter, number & symbol";
+
+  if (p !== c)
+    return signupError.innerText = "Passwords don't match";
+
+  // تحقق من وجود مستخدم سابق
+  if (localStorage.getItem("user_" + u))
+    return signupError.innerText = "User already exists";
+
+  // حفظ المستخدم الجديد
+  const newUser = {
+    username: u,
+    email: e,
+    password: p
+  };
+
+  localStorage.setItem("user_" + u, JSON.stringify(newUser));
+
+ // تسجيل دخول تلقائي بعد إنشاء الحساب
+localStorage.setItem("currentUser", u);
+localStorage.setItem("loggedIn", "true");
+// إعادة تحميل الصفحة لتحميل بيانات user الجديد
+location.reload();
+
+showMsg("Your account has been created. Welcome!");
+
+document.getElementById("loginScreen").style.display = "none";
+document.getElementById("mainApp").style.display = "block";
+}
+
+// تسجيل دخول
+function login() {
+  const u = loginUsername.value.trim();
+  const p = loginPassword.value.trim();
+
+  const data = localStorage.getItem("user_" + u);
+  if (!data) return loginError.innerText = "Invalid username";
+
+  const user = JSON.parse(data);
+  if (user.password !== p) return loginError.innerText = "Wrong password";
+
+  // حفظ الجلسة
+  localStorage.setItem("currentUser", u);
+  localStorage.setItem("loggedIn", "true");
+
+  // إظهار الصفحة الرئيسية
+  document.getElementById("loginScreen").style.display = "none";
+  document.getElementById("mainApp").style.display = "block";
+localStorage.setItem("currentUser", u);
+localStorage.setItem("loggedIn", "true");
+
+// بعد تسجيل الدخول نحمل مفاتيح المستخدم الجديدة
+location.reload();
+  
+}
+
+// تسجيل خروج
+function logout() {
+  localStorage.removeItem("loggedIn");
+  localStorage.removeItem("currentUser");
+
+  document.getElementById("mainApp").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+}
+
+// تشغيل عند تحميل الصفحة
+window.onload = function() {
+  if (localStorage.getItem("loggedIn") === "true") {
+    document.getElementById("loginScreen").style.display = "none";
+    document.getElementById("mainApp").style.display = "block";
+    
+  }
+};
+
+
+
+   flatpickr("#inpDate", {
+    dateFormat: "Y-m-d", // صيغة ثابتة YYYY-MM-DD
+    locale: "en",         // اللغة الإنجليزية
+    allowInput: true      // يسمح بالكتابة اليدوية
+  });
+
+
+
+  const loggedIn = localStorage.getItem('loggedIn');
+
+  const RATE = 3.75;
+
+
+ let user = localStorage.getItem("currentUser") || null;
+if (!user) {
+  // ما فيه مستخدم → لا نحمّل بيانات أي حساب
+  window.currentUserData = {};
+} else {
+  // مستخدم موجود → نستخدم اسمه في المفاتيح
+  window.currentUserData = JSON.parse(localStorage.getItem("user_" + user) || "{}");
+}
+
+const KEY_BAL = `tw_balance_${user}`;  
+const KEY_CATS = `tw_categories_${user}`;  
+const KEY_DEL = `tw_deleted_${user}`;  
+const KEY_CUR = `tw_currency_${user}`;  
+const KEY_THEME = `tw_theme_${user}`;  
+ 
+ 
+  let balance=parseFloat(localStorage.getItem(KEY_BAL))||0;
+  let categories=JSON.parse(localStorage.getItem(KEY_CATS)||'[]');
+  let deleted=JSON.parse(localStorage.getItem(KEY_DEL)||'[]');
+  let currency=localStorage.getItem(KEY_CUR)||'';
+  let theme=localStorage.getItem(KEY_THEME)||'light';
+  let currentView='home',editIndex=-1;
+
+  if(theme==='dark'){document.body.classList.add('dark');document.getElementById('darkSwitch').checked=true;}
+  document.getElementById('cur').innerText=currency||'--';
+  document.getElementById('currencySelect').value=currency;
+
+  function saveAll(){
+    localStorage.setItem(KEY_BAL,balance.toFixed(2));
+    localStorage.setItem(KEY_CATS,JSON.stringify(categories));
+    localStorage.setItem(KEY_DEL,JSON.stringify(deleted));
+    localStorage.setItem(KEY_CUR,currency);
+    localStorage.setItem(KEY_THEME,theme);
+  }
+
+ 
+
+  function formatNum(n){return Number(n).toFixed(2);}
+  function toggleSidebar(){const sb=document.getElementById('sidebar');sb.style.left=(sb.style.left==='0px')?'-260px':'0px';}
+
+  function toggleDarkMode(){
+    const sw=document.getElementById('darkSwitch').checked;
+    if(sw){document.body.classList.add('dark');theme='dark';}else{document.body.classList.remove('dark');theme='light';}
+    saveAll();
+  }
+  function showMsg(text) {
+  // إنشاء الخلفية الشفافة
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.background = 'rgba(0,0,0,0.45)';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.zIndex = '400';
+  overlay.style.backdropFilter = 'blur(3px)';
+
+  // صندوق الرسالة
+  const box = document.createElement('div');
+  box.style.background = 'var(--card)';
+  box.style.color = 'var(--text)';
+  box.style.padding = '26px 30px';
+  box.style.borderRadius = '12px';
+  box.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+  box.style.textAlign = 'center';
+  box.style.minWidth = '260px';
+  box.style.maxWidth = '80%';
+  box.style.fontSize = '1.1rem';
+  box.style.fontWeight = '600';
+  box.style.border = '1px solid var(--accent-dark)';
+  box.style.transform = 'scale(0.9)';
+  box.style.transition = 'all 0.25s ease';
+  box.style.opacity = '0';
+
+  // النص
+  const msg = document.createElement('div');
+  msg.innerText = text;
+  msg.style.marginBottom = '18px';
+
+  // زر OK
+  const okBtn = document.createElement('button');
+  okBtn.innerText = 'OK';
+  okBtn.className = 'btn';
+  okBtn.style.padding = '10px 24px';
+  okBtn.onclick = () => {
+    box.style.opacity = '0';
+    box.style.transform = 'scale(0.9)';
+    setTimeout(() => overlay.remove(), 200);
+  };
+
+  // جمع العناصر
+  box.appendChild(msg);
+  box.appendChild(okBtn);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  // ظهور ناعم
+  setTimeout(() => {
+    box.style.opacity = '1';
+    box.style.transform = 'scale(1)';
+  }, 10);
+  
+}
+function showAddBalancePopup() {
+  if(!currency) return showMsg('Select a currency first.'); // تحقق من اختيار العملة
+  document.getElementById('inpBalanceAmount').value = ''; // تنظيف الحقل
+  document.getElementById('panelBalanceTitle').innerText = 'Add to Main Balance';
+  document.getElementById('overlayBalance').style.display = 'flex';
+}
+
+function closeBalancePopup() {
+  document.getElementById('overlayBalance').style.display = 'none';
+}
+function saveBalance() {
+  const input = document.getElementById('inpBalanceAmount').value;
+  const v = parseFloat(input.replace(',', '.')); // تحويل الفاصلة للنقطة
+  if(isNaN(v) || v <= 0) return showMsg('Invalid amount');
+  balance += v;
+  saveAll();
+  updateBalanceUI();
+  showMsg('Added');
+  closeBalancePopup();
+}
+
+
+function showMotivationMsg() {
+  const msgs = [
+    "Save today, enjoy tomorrow🌟",
+    "Small savings build big dreams💪",
+    "Your future self will thank you for saving today🚀",
+    "Invest in your future, one coin at a time💰"
+  ];
+
+  const text = msgs[Math.floor(Math.random() * msgs.length)];
+
+  // صندوق الرسالة التحفيزية بدون زر OK، يختفي تلقائيًا
+  const overlay = document.createElement('div');
+  overlay.style.position = 'fixed';
+  overlay.style.top = '0';
+  overlay.style.left = '0';
+  overlay.style.width = '100%';
+  overlay.style.height = '100%';
+  overlay.style.display = 'flex';
+  overlay.style.alignItems = 'center';
+  overlay.style.justifyContent = 'center';
+  overlay.style.zIndex = '400';
+  overlay.style.pointerEvents = 'none'; // عشان ما يمنع المستخدم من التفاعل مع الصفحة
+
+  const box = document.createElement('div');
+  box.style.background = 'var(--card)';
+  box.style.color = 'var(--text)';
+  box.style.padding = '20px 26px';
+  box.style.borderRadius = '12px';
+  box.style.boxShadow = '0 10px 30px rgba(0,0,0,0.3)';
+  box.style.textAlign = 'center';
+  box.style.fontSize = '1rem';
+  box.style.fontWeight = '600';
+  box.style.border = '1px solid var(--accent-dark)';
+  box.style.transform = 'scale(0.9)';
+  box.style.transition = 'all 0.25s ease';
+  box.style.opacity = '0';
+
+  const msg = document.createElement('div');
+  msg.innerText = text;
+
+  box.appendChild(msg);
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  // ظهور ناعم
+  setTimeout(() => {
+    box.style.opacity = '1';
+    box.style.transform = 'scale(1)';
+  }, 10);
+
+  // اختفاء تلقائي بعد 2.5 ثانية
+  setTimeout(() => {
+    box.style.opacity = '0';
+    box.style.transform = 'scale(0.9)';
+    setTimeout(() => overlay.remove(), 250);
+  }, 2500);
+}
+function addBalanceWithMotivation(amount) {
+  balance += amount;
+  updateBalance();
+ showMotivationMsg();
+ // تظهر الرسالة التحفيزية فقط عند الإضافة
+}
+
+//هذا اللي يغير العملة
+  function changeCurrency(){
+    const newCur = document.getElementById('currencySelect').value;
+  if(!newCur) return;
+
+  if(!currency){
+    currency = newCur;
+    saveAll();
+    renderAll();
+    updateBalanceUI();
+    showMsg(`Currency set to ${currency}`);
+    return;
+  }
+
+  if(newCur === currency) return;
+
+  // بدل confirm، نعرض رسالة داخل التطبيق
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.innerHTML = `
+    <div class="panel">
+      <h3>Convert Currency?</h3>
+      <p>Convert all values from ${currency} to ${newCur}?</p>
+      <div style="display:flex; gap:10px; margin-top:10px;">
+        <button id="confirmYes" class="btn">Yes</button>
+        <button id="confirmNo" class="btn ghost">Cancel</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.style.display = 'flex';
+
+  document.getElementById('confirmYes').onclick = () => {
+    if(currency==='﷼'&&newCur==='USD'){
+      balance /= RATE;
+      categories.forEach(c => {c.amount /= RATE; c.target /= RATE;});
+    } else if(currency==='USD'&&newCur==='﷼'){
+      balance *= RATE;
+      categories.forEach(c => {c.amount *= RATE; c.target *= RATE;});
+    }
+    currency = newCur;
+    saveAll();
+    renderAll();
+    updateBalanceUI();
+    showMsg(`Currency changed to ${currency}`);
+    document.body.removeChild(overlay);
+  };
+
+  document.getElementById('confirmNo').onclick = () => {
+    document.body.removeChild(overlay);
+  };
+}
+
+
+
+
+//هذا اللي يغير الرصيد بالمحفظة
+  function updateBalanceUI(){document.getElementById('balance').innerText=formatNum(balance);document.getElementById('cur').innerText=currency||'--';}
+function openDeductPopup() {
+  document.getElementById('inpDeductAmount').value = '';
+  document.getElementById('overlayDeduct').style.display = 'flex';
+}
+
+function closeDeductPopup() {
+  document.getElementById('overlayDeduct').style.display = 'none';
+}
+
+
+//تتحقق ان المبلغ مايتعدى المفروض
+function deductBalance() {
+  const amount = parseFloat(document.getElementById('inpDeductAmount').value);
+
+  if (isNaN(amount) || amount <= 0) {
+    return showMsg('Enter a valid amount');
+  }
+
+  if (amount > balance) {
+    return showMsg('Not enough balance');
+  }
+
+  balance -= amount;
+  updateBalanceUI();
+  closeDeductPopup();
+  showMsg('Amount withdrawn successfully!');
+}
+  
+// فتح واغلاق النافذة
+function openResetPopup() {
+  document.getElementById('overlayReset').style.display = 'flex';
+}
+
+function closeResetPopup() {
+  document.getElementById('overlayReset').style.display = 'none';
+}
+
+// تأكيد الريسيت
+function confirmResetBalance() {
+  balance = 0; // إعادة الرصيد للصفر
+  updateBalanceUI(); // تحديث العرض
+  closeResetPopup();
+}
+
+
+
+
+
+
+  function showView(v){currentView=v;renderAll();document.getElementById('sidebar').style.left='-260px';document.getElementById('sectionTitle').innerText=v==='favorites'?'Favorites':'All Categories';}
+
+  function showDeleted(){openDeletedOverlay();document.getElementById('sidebar').style.left='-260px';}
+
+  function showPopup(i=-1){editIndex=i;document.getElementById('overlay').style.display='flex';document.getElementById('panelTitle').innerText=i===-1?'Add Category':'Edit Category';
+    if(i!==-1){const c=categories[i];inpName.value=c.name;inpDesc.value=c.desc;inpTarget.value=c.target;inpDate.value=c.date;}else{inpName.value='';inpDesc.value='';inpTarget.value='';inpDate.value='';}
+  }
+  function closePopup(){overlay.style.display='none';}
+
+  function saveCategory(){
+     const n = inpName.value.trim(),
+        d = inpDesc.value.trim(),
+        t = parseFloat(inpTarget.value),
+        date = inpDate.value;
+
+  // نوع الفئة (قصيرة أو طويلة)
+  const type = document.querySelector('input[name="goalType"]:checked').value;
+
+  // إذا طويلة المدى، تحقق من الشروط
+  if (type === 'long' && t < 10000) {
+    return showMsg('Long-term goals must be at least 10,000');
+  }
+  if (type === 'short' && t > 9999.9) {
+    return showMsg('Short-term goals must be 9999.9 or less');
+  }
+
+  // استرجاع اللون والأيقونة
+  const color = type === 'long' ? selectedColor || '#3498db' : null;
+  const icon = type === 'long' ? selectedIcon || '' : '';
+
+  if (!n || !d || isNaN(t) || t <= 0 || !date) {
+    return showMsg('Fill all fields');
+  }
+
+  if (editIndex === -1) {
+    categories.push({
+      id: Date.now(),
+      name: n,
+      desc: d,
+      target: +t,
+      amount: 0,
+      date,
+      fav: false,
+      type,
+      color,
+      icon
+    });
+    showMsg('Added');
+  } else {
+    const c = categories[editIndex];
+    c.name = n;
+    c.desc = d;
+    c.target = +t;
+    c.date = date;
+    c.type = type;
+    c.color = color;
+    c.icon = icon;
+    showMsg('Updated');
+  }
+
+  editIndex = -1;
+  saveAll();
+  closePopup();
+  renderAll();
+  }
+
+  let selectedColor = null;
+let selectedIcon = '';
+
+function selectColor(c) {
+  selectedColor = c;
+  document.querySelectorAll('.colorChoice').forEach(el => el.style.outline = 'none');
+  event.target.style.outline = '3px solid var(--accent)';
+}
+
+function selectIcon(ic) {
+  selectedIcon = ic;
+  document.querySelectorAll('#iconChoices span').forEach(el => el.style.opacity = '0.5');
+  event.target.style.opacity = '1';
+}
+
+// إظهار / إخفاء خيارات اللون والأيقونة بناء على نوع الفئة
+document.addEventListener('change', e => {
+  if (e.target.name === 'goalType') {
+    document.getElementById('longOptions').style.display = e.target.value === 'long' ? 'block' : 'none';
+  }
+});
+
+
+ function renderAll(onlyFavs = false){
+  const grid = document.getElementById('grid');
+grid.innerHTML = '';
+// نخلي العناصر تظهر بشكل عمودي (فوق وتحت)
+grid.style.display = 'flex';
+grid.style.flexDirection = 'column';
+grid.style.gap = '40px'; // مسافة بين القسمين
+     updateBalanceUI();
+ 
+
+  // فلترة الفئات حسب النوع
+  let shortList = categories.filter(c => c.type !== 'long');
+  let longList = categories.filter(c => c.type === 'long');
+
+  if (onlyFavs) {
+    shortList = shortList.filter(c => c.fav);
+    longList = longList.filter(c => c.fav);
+  }
+
+  // ===== قسم الفئات قصيرة المدى =====
+  const shortSection = document.createElement('div');
+  shortSection.className = 'grid-section';
+  const shortTitle = document.createElement('h3');
+  shortTitle.className = 'grid-title';
+  shortTitle.innerText = 'Short-term Categories';
+
+  const shortGrid = document.createElement('div');
+  shortGrid.className = 'grid';
+
+  if (shortList.length === 0) {
+    shortGrid.innerHTML = '<div style="opacity:0.6">No short-term categories</div>';
+  } else {
+    shortList.forEach(c => renderCategory(c, shortGrid));
+  }
+
+  shortSection.appendChild(shortTitle);
+  shortSection.appendChild(shortGrid);
+  grid.appendChild(shortSection);
+
+  // ===== قسم الفئات طويلة المدى =====
+  const longSection = document.createElement('div');
+  longSection.className = 'grid-section';
+  const longTitle = document.createElement('h3');
+  longTitle.className = 'grid-title';
+  longTitle.innerText = 'Long-term Goals';
+
+  const longGrid = document.createElement('div');
+  longGrid.className = 'grid';
+
+  if (longList.length === 0) {
+    longGrid.innerHTML = '<div style="opacity:0.6">No long-term goals</div>';
+  } else {
+    longList.forEach(c => renderCategory(c, longGrid));
+  }
+
+  longSection.appendChild(longTitle);
+  longSection.appendChild(longGrid);
+  grid.appendChild(longSection);
+
+  
+
+  // دالة رسم الفئة نفسها
+  function renderCategory(c, parentGrid) {
+    const i = categories.findIndex(x => x.id === c.id);
+  const pct = c.target === 0 ? 0 : (c.amount / c.target) * 100;
+  const over = c.amount > c.target;
+
+  const div = document.createElement('div');
+  div.className = 'cat';
+
+  // إذا كانت طويلة المدى، نضيف الكلاس الخاص
+  if (c.type === 'long') {
+    div.classList.add('long');
+
+    // نحسب اللون الفاتح
+    const baseColor = c.color || '#3498db';
+     //تفتيح اللون
+    const lighten = (hex, amt) => {
+      let usePound = false;
+      if (hex[0] === "#") {
+        hex = hex.slice(1);
+        usePound = true;
+      }
+      const num = parseInt(hex, 16);
+      let r = (num >> 16) + amt;
+      let g = ((num >> 8) & 0x00FF) + amt;
+      let b = (num & 0x0000FF) + amt;
+      r = Math.min(255, Math.max(0, r));
+      g = Math.min(255, Math.max(0, g));
+      b = Math.min(255, Math.max(0, b));
+      return (usePound ? "#" : "") + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
+    };
+
+    
+
+    
+    const fillColor = baseColor;
+
+    // الخلفية الأساسية واللون التدريجي
+    // إنشاء خلفية أفتح بدرجة واحدة من اللون اللي اختاره المستخدم
+const lightColor = lighten(baseColor, 80);
+div.style.background = lightColor;
+
+// تحديد لون الشريط (نفس اللون الأصلي)
+div.style.setProperty('--fill-color', fillColor);
+    
+    div.style.transition = "background 0.3s ease";
+  }
+
+  div.innerHTML = `
+    <div class="menu-dot" onclick="toggleMenu(${i})">⋮</div>
+    <div class="menu-box" id="menubox${i}">
+      <button onclick="openDepositPopup(${i})">💰 Deposit</button>
+      <button onclick="openWithdrawPopup(${i})">💸 Withdraw</button>
+      <button onclick="toggleFav(${i})">${c.fav ? '❌ Remove Favorite' : '⭐️ Add Favorite'}</button>
+      <button onclick="editCat(${i})">✏️ Edit</button>
+      <button  onclick="openDeletePopup(${i})" >🗑️ Delete</button>
+    </div>
+   <h4>${c.icon ? c.icon + ' ' : ''}${escapeHtml(c.name)} ${c.fav ? '⭐️' : ''}</h4>
+    <p class="muted">${escapeHtml(c.desc)}</p>
+    <p><strong>${formatNum(c.amount)} / ${formatNum(c.target)} ${currency} ${over ? '<span class="over">(Over)</span>' : ''}</strong></p>
+    <p class="meta">Date: ${c.date}</p>
+    ${c.type === 'long' ? `
+  <div class="progress-bg">
+    <div class="progress-fill" style="width:${pct}%; background:${c.color};"></div>
+  </div>` : ''}
+  `;
+  //عشان نغمق لون الكتابة في الفئات طويلة
+  parentGrid.appendChild(div);
+     if (c.type === "long") {
+        const base = c.color;
+
+        function darken(hex, amt) {
+            let usePound = false;
+            if (hex[0] === "#") {
+                hex = hex.slice(1);
+                usePound = true;
+            }
+            const num = parseInt(hex, 16);
+            let r = (num >> 16) - amt;
+            let g = ((num >> 8) & 0x00FF) - amt;
+            let b = (num & 0x00FF) - amt;
+            r = Math.max(0, r);
+            g = Math.max(0, g);
+            b = Math.max(0, b);
+            return (usePound ? "#" : "") + (r << 16 | g << 8 | b).toString(16).padStart(6, '0');
+        }
+
+        const darkerText = darken(base, 40);// ← تغميق 40 درجة،    
+
+        div.style.color = darkerText;
+    }
+
+ 
+  }
+
+ }
+  
+document.getElementById('btnShowFavs').onclick = () => {
+    renderAll(true); // true يعني فقط المفضلات
+};
+
+  function escapeHtml(s){return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');}
+  function toggleMenu(i){document.querySelectorAll('[id^="menubox"]').forEach(m=>m.style.display='none');const e=document.getElementById('menubox'+i);e.style.display=e.style.display==='block'?'none':'block';}
+  
+  window.toggleFav = function(i){
+  categories[i].fav = !categories[i].fav;
+  saveAll();
+  renderAll();
+  showMsg(categories[i].fav ? 'Added to favorites' : 'Removed');
+};
+  
+  
+
+
+  
+
+
+//هذا حق الايداع في الفئة
+let depositIndex = null;
+function openDepositPopup(i) {
+  if (!currency) return alert('Select a currency'); // إذا ما فيه عملة محددة
+  depositIndex = i;
+  document.getElementById('inpDepositAmount').value = '';
+  document.getElementById('overlayDeposit').style.display = 'flex';
+}
+function closeDepositPopup() {
+  document.getElementById('overlayDeposit').style.display = 'none';
+}
+
+
+function confirmDeposit() {
+   const c = categories[depositIndex];
+  const v = parseFloat(document.getElementById('inpDepositAmount').value);
+
+  if (isNaN(v) || v <= 0) {
+    return showMsg('Enter a valid amount');
+  }
+
+  // ✅ منع الإيداع إذا كانت الفئة وصلت الهدف
+  if (c.amount >= c.target) {
+    return showMsg('This category has already reached its target!');
+  }
+
+  // ✅ منع الإيداع فوق الهدف
+  const maxDeposit = c.target - c.amount;
+  if (v > maxDeposit) {
+    return showMsg(`You can only deposit up to ${maxDeposit.toFixed(2)} to reach the goal.`);
+  }
+
+  if (v > balance) {
+    return showMsg('Insufficient balance');
+  }
+
+  // نافذة التأكيد
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.id = 'overlayConfirmDeposit';
+  overlay.innerHTML = `
+    <div class="panel">
+      <h3>Confirm Deposit</h3>
+      <p>Are you sure you want to deposit <strong>${v.toFixed(2)}</strong> into "<strong>${c.name}</strong>"?</p>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button class="btn" id="btnYesDeposit">Yes</button>
+        <button class="btn ghost" id="btnNoDeposit">Cancel</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.style.display = 'flex';
+
+  document.getElementById('btnYesDeposit').onclick = () => {
+    c.amount += v;
+    balance -= v;
+    saveAll();
+    renderAll();
+    showMotivationMsg();
+    closeDepositPopup();
+    document.body.removeChild(overlay);
+  };
+
+  document.getElementById('btnNoDeposit').onclick = () => {
+    document.body.removeChild(overlay);
+  };
+}
+
+
+//ذا حق السحب من الفئة
+  let withdrawIndex = null;
+
+function openWithdrawPopup(i) {
+  if (!currency) return alert('Select a currency'); // إذا ما فيه عملة محددة
+  withdrawIndex = i;
+  document.getElementById('inpWithdrawAmount').value = '';
+  document.getElementById('overlayWithdraw').style.display = 'flex';
+}
+function closeWithdrawPopup() {
+  document.getElementById('overlayWithdraw').style.display = 'none';
+}
+
+//تاكيد السحب من الفئة
+function confirmWithdraw() {
+  const c = categories[withdrawIndex];
+  const v = parseFloat(document.getElementById('inpWithdrawAmount').value);
+  if (isNaN(v) || v <= 0) {
+    return showMsg('Enter a valid amount');
+  }
+  if (v > c.amount) {
+    return showMsg('Exceeds category balance');
+  }
+  const overlay = document.createElement('div');
+  overlay.className = 'overlay';
+  overlay.id = 'overlayConfirmWithdraw';
+  overlay.innerHTML = `
+    <div class="panel">
+      <h3>Confirm Withdrawal</h3>
+      <p>Are you sure you want to withdraw <strong>${v.toFixed(2)}</strong> from "<strong>${c.name}</strong>"?</p>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button class="btn" id="btnYesWithdraw">Yes</button>
+        <button class="btn ghost" id="btnNoWithdraw">Cancel</button>
+      </div>
+    </div>
+  `;
+  //زر يس
+  document.body.appendChild(overlay);
+  overlay.style.display = 'flex';
+   document.getElementById('btnYesWithdraw').onclick = () => {
+    c.amount -= v;
+    balance += v;
+    saveAll();
+    renderAll();
+    showMsg(`Withdrawn ${v.toFixed(2)} from "${c.name}"`);
+    closeWithdrawPopup();
+    document.body.removeChild(overlay);
+  };
+  // زر "Cancel"
+  document.getElementById('btnNoWithdraw').onclick = () => {
+    document.body.removeChild(overlay);
+  };
+}
+  function editCat(i){showPopup(i);}
+
+ //حذف فئة
+  let deleteIndex = null;
+function openDeletePopup(i) {
+  deleteIndex = i;
+  document.getElementById('overlayDelete').style.display = 'flex';
+  const c = categories[i];
+  document.getElementById('deleteMessage').textContent =
+    `Are you sure you want to delete "${c.name}"?`;
+}
+function closeDeletePopup() {
+  document.getElementById('overlayDelete').style.display = 'none';
+}
+function confirmDelete() {
+   const i = deleteIndex;
+  const c = categories[i];
+  balance += c.amount;
+  
+  // استخدم نفس بيانات الفئة بدون تغيير التاريخ
+  deleted.push({
+    ...c
+  });
+
+  categories.splice(i, 1);
+  saveAll();
+  renderAll();
+  showMsg(`Deleted "${c.name}" and returned ${c.amount} to balance`);
+  closeDeletePopup();
+}
+
+//هيستوري الحذف
+  function openDeletedOverlay(){
+    const div=document.getElementById('deletedList');div.innerHTML='';
+    if(deleted.length===0){div.innerHTML='<div style="opacity:0.7">No deleted categories</div>';delOverlay.style.display='flex';return;}
+    deleted.forEach((c,i)=>{const d=document.createElement('div');d.style.borderBottom='1px solid #ccc';d.style.padding='6px 0';
+    const displayDate = c.date;
+     d.innerHTML = `
+  <strong>${c.name}</strong> (${c.date})
+  <div style="margin-top:4px;display:flex;gap:6px">
+    <button class="btn" onclick="restoreCat(${i})">Restore</button>
+    <button class="btn ghost" style="color:var(--danger)" onclick="removeDeleted(${i})">Delete Permanently</button>
+  </div>
+`;
+      div.appendChild(d);
+    });
+    delOverlay.style.display='flex';
+  }
+
+  function closeDeleted(){delOverlay.style.display='none';}
+
+  function restoreCat(i){ const c = deleted[i];
+
+  c.amount=0;
+  // استرجاع الفئة كما هي بدون تعديل التاريخ
+  categories.push(c);
+  deleted.splice(i, 1);
+
+  saveAll();
+  renderAll();
+  openDeletedOverlay();
+
+  showMsg(`Restored "${c.name}" with amount reset to 0`);}
+ 
+
+//تاكيد الحذف
+  function removeDeleted(i){ const c = deleted[i];
+  // إنشاء نافذة التأكيد
+  const confirmBox = document.createElement('div');
+  confirmBox.className = 'confirm-overlay';
+  confirmBox.innerHTML = `
+    <div class="confirm-panel">
+      <h3>Delete Permanently</h3>
+      <p>Are you sure you want to permanently delete "<strong>${c.name}</strong>"?</p>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+        <button class="btn" id="yesDelete">Yes</button>
+        <button class="btn ghost" id="noDelete">Cancel</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(confirmBox);
+  // إذا اختار "نعم"
+  document.getElementById('yesDelete').onclick = () => {
+    deleted.splice(i, 1);
+    saveAll();
+    openDeletedOverlay();
+    showMsg('Deleted permanently');
+    document.body.removeChild(confirmBox);
+  };
+  // إذا اختار "إلغاء"
+  document.getElementById('noDelete').onclick = () => {
+    document.body.removeChild(confirmBox);
+  };}
+
+
+
+  document.addEventListener('click',e=>{
+    const isMenu=e.target.closest('.menu-dot')||e.target.closest('.menu-box');
+    if(!isMenu)document.querySelectorAll('[id^="menubox"]').forEach(el=>el.style.display='none');
+    if(e.target===overlay)closePopup();
+    if(e.target===delOverlay)closeDeleted();
+  });
+
+
+
+  updateBalanceUI();renderAll();
+
+  
+  function logout() {
+  localStorage.removeItem("loggedIn");
+  localStorage.removeItem("currentUser");
+
+  document.getElementById("mainApp").style.display = "none";
+  document.getElementById("loginScreen").style.display = "flex";
+}
+
+</script>
+</body>
+</html>
